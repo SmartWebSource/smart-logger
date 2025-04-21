@@ -6,19 +6,21 @@
 ## 📖 About
 
 **API Request Logger** is a simple Laravel package that logs incoming API requests into your database automatically.  
-Perfect for debugging, auditing, and monitoring API traffic.
+Perfect for debugging, auditing, and monitoring API traffic in your applications.
 
 ---
 
 ## 🚀 Installation
 
-Install the package via Composer:
+Follow these steps to install and set up the package:
+
+### 1. Install via Composer
 
 ```bash
 composer require smartwebsource/apirequestlogger
 ```
 
-## 📦 Publishing Configuration and Views
+## 📦 2. (Optional) Publishing Configuration and Views
 To customize the package's configuration or views, publish them using:
 ```bash
 php artisan vendor:publish --provider="Smartwebsource\ApiRequestLogger\ApiRequestLoggerServiceProvider"
@@ -31,8 +33,9 @@ config/api_request_logs.php
 
 Views to:
 resources/views/vendor/api_request_logs/
+Note: Publishing is optional. The package works with default settings out of the box.
 
-## 🛠️ Run Migrations
+## 🛠️ 3. Run Migrations
 Run the migrations to create the api_request_logs table:
 ```bash
 php artisan migrate
