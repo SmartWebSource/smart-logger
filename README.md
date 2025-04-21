@@ -48,6 +48,31 @@ config/api_request_logs.php
 ```
 Available settings may include enabling/disabling logging, excluding certain routes, etc.
 
+## 🛠 Local Development Setup
+
+If you're developing or testing this package locally:
+
+### Prerequisites
+1. Place the `ApiRequestLogger` package inside your project's `packages/` directory
+2. Or adjust the path in your `composer.json` if using a different location
+
+### Configuration
+Add this to your project's `composer.json`:
+
+```json
+{
+  "require": {
+    "smartwebsource/apirequestlogger": "^1.0"
+  },
+  "repositories": [
+    {
+      "type": "path",
+      "url": "packages/ApiRequestLogger"
+    }
+  ]
+}
+```
+
 ## 🔥 Usage
 
 Once installed, the package automatically logs all incoming API requests (api middleware group).  
