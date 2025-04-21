@@ -49,10 +49,12 @@ config/api_request_logs.php
 Available settings may include enabling/disabling logging, excluding certain routes, etc.
 
 ## 🔥 Usage
-Once installed, the package automatically logs all incoming API requests (api middleware group).
+
+Once installed, the package automatically logs all incoming API requests (api middleware group).  
 No additional setup is required.
 
-You can view or manage the logs through your database or build a simple dashboard using the published views.
+You can view or manage the logs by hitting the `/api-request-logs` route.
+
 
 ## 🛡 License
 This package is open-source software licensed under the MIT license.
@@ -63,9 +65,10 @@ Developed and maintained by Smartwebsource.
 For any queries or support, contact:
 📧 test@smartwebsource.com
 
-## 🎯 Quick Commands Cheat Sheet
-Action | Command
-Install package | composer require smartwebsource/apirequestlogger
-Publish config and views | php artisan vendor:publish --provider="Smartwebsource\ApiRequestLogger\ApiRequestLoggerServiceProvider"
-Run migrations | php artisan migrate
+## 🎯 Essential Commands
 
+| Command | Description |
+|---------|-------------|
+| `composer require smartwebsource/apirequestlogger` | Install the package |
+| `php artisan vendor:publish --provider="Smartwebsource\ApiRequestLogger\ApiRequestLoggerServiceProvider"` | Publish assets (optional) |
+| `php artisan migrate` | Create database tables |
