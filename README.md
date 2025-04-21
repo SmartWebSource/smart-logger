@@ -65,10 +65,11 @@ Developed and maintained by Smartwebsource.
 For any queries or support, contact:
 📧 test@smartwebsource.com
 
-## 🎯 Essential Commands
+## 🎯 Command Reference
 
-| Command | Description |
-|---------|-------------|
-| `composer require smartwebsource/apirequestlogger` | Install the package |
-| `php artisan vendor:publish --provider="Smartwebsource\ApiRequestLogger\ApiRequestLoggerServiceProvider"` | Publish assets (optional) |
-| `php artisan migrate` | Create database tables |
+| Action | Command | Optional |
+|--------|---------|----------|
+| **Install package** | `composer require smartwebsource/apirequestlogger` | No |
+| **Publish configuration & views** | `php artisan vendor:publish --provider="Smartwebsource\ApiRequestLogger\ApiRequestLoggerServiceProvider"` | Yes |
+| **Run migrations** | `php artisan migrate` | No |
+
