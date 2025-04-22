@@ -18,6 +18,8 @@ Follow these steps to install and set up the package:
 
 ```bash
 composer require smartwebsource/apirequestlogger
+composer require smartwebsource/apirequestlogger:dev-main
+
 ```
 
 ## 📦 2. (Optional) Publishing Configuration and Views
