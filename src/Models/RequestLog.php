@@ -2,7 +2,7 @@
 
 namespace Smartwebsource\RequestLogger\Models;
 
-use App\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class RequestLog extends Model
@@ -21,7 +21,9 @@ class RequestLog extends Model
         'body' => 'array',
     ];
 
-    public function user(){
-        return $this->belongsTo(User::class);
+    public function user()
+    {
+        $userModel = Auth::getProvider()->getModel();
+        return $this->belongsTo($userModel, 'user_id');
     }
 }
