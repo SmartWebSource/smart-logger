@@ -72,6 +72,15 @@ Add this to your project's `composer.json`:
   ]
 }
 ```
+### Pull from git repo:
+```bash
+"repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/SmartWebSource/smart-logger.git"
+    }
+  ]
+```
 
 ## 🔥 Usage
 
