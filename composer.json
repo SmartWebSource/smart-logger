@@ -1,5 +1,5 @@
 {
-    "name": "smartwebsource/apirequestlogger",
+    "name": "smartwebsource/requestlogger",
     "description": "API Request Logger Package for Laravel",
     "version": "1.0.0",
     "type": "library",
@@ -12,7 +12,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Smartwebsource\\ApiRequestLogger\\": "src/"
+            "Smartwebsource\\RequestLogger\\": "src/"
         }
     },
     "require": {
@@ -22,7 +22,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Smartwebsource\\ApiRequestLogger\\ApiRequestLoggerServiceProvider"
+                "Smartwebsource\\RequestLogger\\RequestLoggerServiceProvider"
             ]
         }
     }

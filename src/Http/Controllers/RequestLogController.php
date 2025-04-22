@@ -1,20 +1,24 @@
 <?php
 
-namespace Smartwebsource\ApiRequestLogger\Http\Controllers;
+namespace Smartwebsource\RequestLogger\Http\Controllers;
 
 use Illuminate\Routing\Controller;
-use Smartwebsource\ApiRequestLogger\Models\ApiRequestLog;
+use Smartwebsource\RequestLogger\Models\RequestLog;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
-class ApiRequestLogController extends Controller
+class RequestLogController extends Controller
 {
     public function index(Request $request)
     {
-        $query = ApiRequestLog::query();
+        $query = RequestLog::with('user:id,email');
 
         if ($request->filled('method')) {
             $query->where('method', 'like', '%' . $request->method . '%');
+        }
+
+        if ($request->filled('type')) {
+            $query->where('request_type', 'like', '%' . $request->type . '%');
         }
 
         if ($request->filled('url')) {
@@ -29,10 +33,16 @@ class ApiRequestLogController extends Controller
             $query->where('body', 'like', '%' . $request->body . '%');
         }
 
+        if ($request->filled('user')) {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('email', 'like', '%' . $request->user . '%');
+            });
+        }
+
         if ($request->filled('created_at')) {
             $datePart = $request->created_at;
         }
-        
+
         if ($request->filled('created_time')) {
             $timePart = $request->created_time;
         }
@@ -43,7 +53,7 @@ class ApiRequestLogController extends Controller
         } elseif (!empty($datePart)) {
             $query->whereDate('created_at', $datePart);
         } elseif (!empty($timePart)) {
-            $query->whereTime('created_at', $timePart);
+            $query->whereTime('created_at', 'like', '%' . $timePart . '%');
         }
 
         $logs = $query->latest()->paginate(10);
@@ -53,9 +63,11 @@ class ApiRequestLogController extends Controller
             $formattedLogs = $logs->map(function ($log) {
                 return [
                     'method' => $log->method,
+                    'type' => $log->request_type,
                     'url' => $log->url,
                     'headers' => $log->headers,
                     'body' => $log->body,
+                    'user' => $log->user,
                     'created_at' => $log->created_at->toDateTimeString(),
                 ];
             });
@@ -66,12 +78,12 @@ class ApiRequestLogController extends Controller
             ]);
         }
 
-        return view('api_request_logs::index', compact('logs'));
+        return view('request_logs::index', compact('logs'));
     }
 
     public function truncate()
     {
-        ApiRequestLog::truncate();
+        RequestLog::truncate();
         return redirect()->back()->with('success', 'Logs cleared.');
     }
 }

@@ -1,9 +1,9 @@
-@extends(config('api_request_logs.layout'))
+@extends(config('request_logs.layout'))
 
 @section('content')
     <div class="container">
         <h1>API Request Logs</h1>
-        <form action="{{ route('api_request_logs.truncate') }}" method="POST" style="margin-bottom: 20px;">
+        <form action="{{ route('request_logs.truncate') }}" method="POST" style="margin-bottom: 20px;">
             @csrf
             <button type="submit" class="btn btn-danger">Clear All Logs</button>
         </form>
@@ -12,20 +12,33 @@
                 <thead>
                     <tr>
                         <th style="width: 100px;">Method</th>
+                        <th style="width: 100px;">Type</th>
                         <th style="width: 400px;">URL</th>
                         <th style="width: 450px;">Headers</th>
                         <th style="width: 450px;">Body</th>
+                        <th style="width: 450px;">User</th>
                         <th style="width: 200px;">Created Date Time</th>
                     </tr>
                     <tr>
-                        <!-- Filter inputs -->
-                        <th><input type="text" class="form-control form-control-sm" id="filter-method"
-                                placeholder="Method"></th>
-                        <th><input type="text" class="form-control form-control-sm" id="filter-url" placeholder="URL">
+                        <th>
+                            <input type="text" class="form-control form-control-sm" id="filter-method"
+                                placeholder="Method">
                         </th>
-                        <th><input type="text" class="form-control form-control-sm" id="filter-headers"
-                                placeholder="Headers"></th>
-                        <th><input type="text" class="form-control form-control-sm" id="filter-body" placeholder="Body">
+                        <th>
+                            <input type="text" class="form-control form-control-sm" id="filter-type" placeholder="Type">
+                        </th>
+                        <th>
+                            <input type="text" class="form-control form-control-sm" id="filter-url" placeholder="URL">
+                        </th>
+                        <th>
+                            <input type="text" class="form-control form-control-sm" id="filter-headers"
+                                placeholder="Headers">
+                        </th>
+                        <th>
+                            <input type="text" class="form-control form-control-sm" id="filter-body" placeholder="Body">
+                        </th>
+                        <th>
+                            <input type="text" class="form-control form-control-sm" id="filter-user" placeholder="Email">
                         </th>
                         <th>
                             <input type="date" class="form-control form-control-sm" id="filter-created-at"
@@ -43,6 +56,10 @@
                                 <div style="height: 200px; max-width: 100%; white-space: nowrap;">{{ $log->method }}</div>
                             </td>
                             <td>
+                                <div style="height: 200px; max-width: 100%; white-space: nowrap;">{{ $log->request_type }}
+                                </div>
+                            </td>
+                            <td>
                                 <div style="max-height: 200px; max-width: 100%; word-wrap: break-word;">{{ $log->url }}
                                 </div>
                             </td>
@@ -55,6 +72,10 @@
                                 <div style="height: 200px; max-width: 100%; overflow-x: auto; white-space: pre;">
                                     <pre style="margin:0; font-size: 12px;">{{ json_encode($log->body ?? [], JSON_PRETTY_PRINT) }}</pre>
                                 </div>
+                            </td>
+                            <td>
+                                <div style="height: 200px; max-width: 100%; overflow-x: auto; white-space: nowrap;">
+                                    {{ $log->user ? $log->user->email : null }}</div>
                             </td>
                             <td>
                                 <div style="height: 200px; max-width: 100%; overflow-x: auto; white-space: nowrap;">
@@ -79,16 +100,20 @@
                 var url = $('#filter-url').val();
                 var headers = $('#filter-headers').val();
                 var body = $('#filter-body').val();
+                var type = $('#filter-type').val();
+                var user = $('#filter-user').val();
                 var created_at = $('#filter-created-at').val();
                 var created_time = $('#filter-created-time').val();
 
                 $.ajax({
-                    url: "{{ route('api_request_logs.index') }}" + "?page=" + page,
+                    url: "{{ route('request_logs.index') }}" + "?page=" + page,
                     type: "GET",
                     data: {
                         method: method,
                         url: url,
                         header_input: headers,
+                        user: user,
+                        type: type,
                         body: body,
                         created_at: created_at,
                         created_time: created_time,
@@ -101,9 +126,11 @@
                             var row = `
                         <tr style="height: 120px;">
                             <td><div style="height: 200px; max-width: 100%; white-space: nowrap;">${log.method}</div></td>
+                            <td><div style="height: 200px; max-width: 100%; white-space: nowrap;">${log.type}</div></td>
                             <td><div style="max-height: 200px; max-width: 100%; word-wrap: break-word;">${log.url}</div></td>
                             <td><div style="height: 200px; max-width: 100%; overflow-x: auto; white-space: pre;"><pre style="margin:0; font-size: 12px;">${JSON.stringify(log.headers, null, 2)}</pre></div></td>
                             <td><div style="height: 200px; max-width: 100%; overflow-x: auto; white-space: pre;"><pre style="margin:0; font-size: 12px;">${JSON.stringify(log.body, null, 2)}</pre></div></td>
+                            <td><div style="height: 200px; max-width: 100%; overflow-x: auto; white-space: nowrap;">${log?.user?.email}</div></td>
                             <td><div style="height: 200px; max-width: 100%; overflow-x: auto; white-space: nowrap;">${log.created_at}</div></td>
                         </tr>
                     `;
@@ -119,7 +146,7 @@
             }
 
             // Listen for input events
-            $('#filter-method, #filter-url, #filter-headers, #filter-body, #filter-created-at, #filter-created-time')
+            $('#filter-method, #filter-url, #filter-type, #filter-user, #filter-headers, #filter-body, #filter-created-at, #filter-created-time')
                 .on('input change',
                     function() {
                         fetchLogs();
