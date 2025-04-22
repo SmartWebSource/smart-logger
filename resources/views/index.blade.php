@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h1>API Request Logs</h1>
+        <h1>Smart Request Logs</h1>
         <form action="{{ route('request_logs.truncate') }}" method="POST" style="margin-bottom: 20px;">
             @csrf
             <button type="submit" class="btn btn-danger">Clear All Logs</button>

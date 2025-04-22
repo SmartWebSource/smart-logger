@@ -29,7 +29,7 @@ class LogRequests
             $captureWeb = config('request_logs.capture_web');
 
             $method = strtoupper($request->method());
-            $allowedApiMethods = array_map('trim', explode(',', strtoupper(config('request_logs.request_method'))));
+            $allowedApiMethods = array_map('trim', explode(',', strtoupper(config('request_logs.api_request_method'))));
             $allowedWebMethods = array_map('trim', explode(',', strtoupper(config('request_logs.web_request_method'))));
 
             $shouldCapture = (!$isWeb && $captureApi && in_array($method, $allowedApiMethods)) ||
