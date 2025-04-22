@@ -18,6 +18,7 @@ Follow these steps to install and set up the package:
 
 ```bash
 composer require smartwebsource/apirequestlogger
+or...
 composer require smartwebsource/apirequestlogger:dev-main
 
 ```
